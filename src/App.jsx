@@ -146,9 +146,8 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         </a>
       </nav>
 
-      <div className="flex items-end justify-between text-[24px] leading-none">
+      <div className="flex justify-end text-[24px] leading-none">
         <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
-        <a href="#legal">LEGAL→</a>
       </div>
     </div>
   );
@@ -158,7 +157,7 @@ function DesktopCatalogueColumn({ palette }) {
   return (
     <div
       id="catalogue"
-      className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col"
+      className="flex h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col"
       style={{ color: palette.text }}
     >
       <CatalogueContent desktop />
@@ -247,7 +246,7 @@ function CatalogueContent({ mobile = false, desktop = false }) {
 
   if (desktop) {
     return (
-      <div className="flex min-h-[calc(100vh-40px)] flex-col justify-between">
+      <div className="flex h-full flex-col justify-between">
         <div className="pt-1 text-[24px] leading-none">CATALOGUE</div>
 
         <section>
@@ -291,6 +290,10 @@ function CatalogueContent({ mobile = false, desktop = false }) {
             ))}
           </div>
         </section>
+
+        <div className="text-[24px] leading-none">
+          <a href="#legal">LEGAL-&gt;</a>
+        </div>
       </div>
     );
   }
