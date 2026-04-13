@@ -11,8 +11,10 @@ Vienna.`;
 
 const RELEASES = [
   { label: "SG001:", text: "DUUN - S/T (2026)", href: "https://schutzgebiet.bandcamp.com/album/s-t-2026" },
-  { label: "SG002:", text: "v7c - Horizon’s Blue Wing (2026)", href: "#" },
-  { label: "SG003:", text: "F.M. Deutsch - duun-2 pres. KABALAH (2026)", href: "#" },
+  { label: "SG00X:", text: "v7c - Horizon’s Blue Wing (2026)", href: "#" },
+  { label: "SG00X:", text: "F.M. Deutsch - duun-2 pres. KABALAH (2026)", href: "#" },
+  { label: "SG00X:", text: "Ora Et Labora - Covercompilation (2026)", href: "#" },
+  { label: "SG00X:", text: "Tria - LP (2026)", href: "#" },
 ];
 
 const MIXES = [
