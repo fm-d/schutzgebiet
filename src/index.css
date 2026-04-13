@@ -1,9 +1,43 @@
 @import "tailwindcss";
 
-html, body, #root {
+@font-face {
+  font-family: "IBM Plex Mono Custom";
+  src: url("./assets/fonts/IBMPlexMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  --bg-bright: #ebf1f4;
+  --text-bright: #061a44;
+  --accent-bright: #d30202;
+
+  --bg-dark: #061a44;
+  --text-dark: #ebf1f4;
+  --accent-dark: #d30202;
+}
+
+html,
+body,
+#root {
   min-height: 100%;
+}
+
+html {
+  font-family: "IBM Plex Mono Custom", monospace;
 }
 
 body {
   margin: 0;
+}
+
+a {
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration: none;
+  }
 }
