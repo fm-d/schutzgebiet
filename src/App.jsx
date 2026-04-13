@@ -123,22 +123,22 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
 
       <nav className="flex flex-col items-end gap-2 text-[24px] leading-none">
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          SPOTIFY-&gt;
+          SPOTIFY→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          BANDCAMP-&gt;
+          BANDCAMP→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          NINA PROTOCOL-&gt;
+          NINA PROTOCOL→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          SOUNDCLOUD-&gt;
+          SOUNDCLOUD→
         </a>
       </nav>
 
       <div className="flex items-end justify-between text-[24px] leading-none">
-        <a href="mailto:f@schutzgebiet.at">CONTACT-&gt;</a>
-        <a href="#legal">LEGAL-&gt;</a>
+        <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
+        <a href="#legal">LEGAL→</a>
       </div>
     </div>
   );
@@ -151,11 +151,7 @@ function DesktopCatalogueColumn({ palette }) {
       className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col"
       style={{ color: palette.text }}
     >
-      <div className="pt-1 text-[24px] leading-none">CATALOGUE</div>
-
-      <div className="mt-10">
-        <CatalogueContent />
-      </div>
+      <CatalogueContent desktop />
     </div>
   );
 }
@@ -182,25 +178,25 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
 
       <nav className="flex flex-col items-end gap-3 text-[24px] leading-none">
         <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
-          CATALOGUE-&gt;
+          CATALOGUE→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          SPOTIFY-&gt;
+          SPOTIFY→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          BANDCAMP-&gt;
+          BANDCAMP→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          NINA PROTOCOL-&gt;
+          NINA PROTOCOL→
         </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
-          SOUNDCLOUD-&gt;
+          SOUNDCLOUD→
         </a>
       </nav>
 
       <div className="flex items-end justify-between text-[24px] leading-none">
-        <a href="mailto:f@schutzgebiet.at">CONTACT-&gt;</a>
-        <a href="#legal">LEGAL-&gt;</a>
+        <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
+        <a href="#legal">LEGAL→</a>
       </div>
     </div>
   );
@@ -232,10 +228,61 @@ function MobileCataloguePage({ palette, onLogoClick }) {
   );
 }
 
-function CatalogueContent({ mobile = false }) {
+function CatalogueContent({ mobile = false, desktop = false }) {
   const headingClass = "text-[24px] leading-none";
-  const blockClass = mobile ? "space-y-12" : "space-y-10";
   const listClass = "mt-3 space-y-1 text-[16px] leading-[1.35]";
+
+  if (desktop) {
+    return (
+      <div className="flex min-h-[calc(100vh-40px)] flex-col justify-between">
+        <div className="pt-1 text-[24px] leading-none">CATALOGUE</div>
+
+        <section>
+          <h2 className={headingClass}>RELEASES</h2>
+          <div className={listClass}>
+            {RELEASES.map((item) => (
+              <CatalogueItem
+                key={item.label + item.text}
+                label={item.label}
+                text={item.text}
+                href={item.href}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className={headingClass}>MIXES</h2>
+          <div className={listClass}>
+            {MIXES.map((item) => (
+              <CatalogueStackedItem
+                key={item.label + item.text}
+                label={item.label}
+                text={item.text}
+                href={item.href}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section>
+          <h2 className={headingClass}>PRESENTED WORKS</h2>
+          <div className={listClass}>
+            {PRESENTED_WORKS.map((item) => (
+              <CatalogueItem
+                key={item.label + item.text}
+                label={item.label}
+                text={item.text}
+                href={item.href}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
+    );
+  }
+
+  const blockClass = mobile ? "space-y-12" : "space-y-10";
 
   return (
     <div className={blockClass}>
