@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import logoLarge from "./assets/logo-150px.svg";
 import logoSmall from "./assets/logo-75px.svg";
 import buttonBrightToDark from "./assets/button-bright-to-dark.svg";
@@ -10,16 +10,16 @@ collective based in
 Vienna.`;
 
 const RELEASES = [
-  { label: "SG001:", text: "DUUN - S/T (2026)", href: "#" },
+  { label: "SG001:", text: "DUUN - S/T (2026)", href: "https://schutzgebiet.bandcamp.com/album/s-t-2026" },
   { label: "SG002:", text: "v7c - Horizon’s Blue Wing (2026)", href: "#" },
   { label: "SG003:", text: "F.M. Deutsch - duun-2 pres. KABALAH (2026)", href: "#" },
 ];
 
 const MIXES = [
-  { label: "SCHUTZ MIX 001:", text: "Studio am Stacheldraht", href: "#" },
-  { label: "SCHUTZ MIX 002:", text: "Hitparade", href: "#" },
-  { label: "SCHUTZ MIX 003:", text: "Ghosted by the USA", href: "#" },
-  { label: "SCHUTZ MIX 004:", text: "Lend a Hand and Lift Me", href: "#" },
+  { label: "SCHUTZ MIX 001:", text: "Studio am Stacheldraht", href: "https://soundcloud.com/schutzgebiet/schutz-mix-1-studio-am-stacheldraht" },
+  { label: "SCHUTZ MIX 002:", text: "Hitparade", href: "https://soundcloud.com/schutzgebiet/schutz-mix-002" },
+  { label: "SCHUTZ MIX 003:", text: "Ghosted by the USA", href: "https://soundcloud.com/schutzgebiet/schutz-mix-003" },
+  { label: "SCHUTZ MIX 004:", text: "Lend a Hand and Lift Me", href: "https://soundcloud.com/schutzgebiet/schutz-mix-004" },
 ];
 
 const PRESENTED_WORKS = [
@@ -40,6 +40,13 @@ function App() {
     }),
     [isBright]
   );
+
+  useEffect(() => {
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute("content", palette.background);
+    }
+  }, [palette.background]);
 
   const handleThemeToggle = () => {
     setTheme((prev) => (prev === "bright" ? "dark" : "bright"));
@@ -122,16 +129,19 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
       </div>
 
       <nav className="flex flex-col items-end gap-2 text-[24px] leading-none">
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <span
+          className="line-through no-underline"
+          style={{ color: palette.external, textDecorationLine: "line-through" }}
+        >
           SPOTIFY→
-        </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        </span>
+        <a href="https://schutzgebiet.bandcamp.com/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           BANDCAMP→
         </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a href="https://www.ninaprotocol.com/profiles/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           NINA PROTOCOL→
         </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a href="https://www.soundcloud.com/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SOUNDCLOUD→
         </a>
       </nav>
@@ -180,16 +190,19 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
           CATALOGUE→
         </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <span
+          className="line-through no-underline"
+          style={{ color: palette.external, textDecorationLine: "line-through" }}
+        >
           SPOTIFY→
-        </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        </span>
+        <a href="https://schutzgebiet.bandcamp.com/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           BANDCAMP→
         </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a href="https://www.ninaprotocol.com/profiles/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           NINA PROTOCOL→
         </a>
-        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a href="https://www.soundcloud.com/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SOUNDCLOUD→
         </a>
       </nav>
