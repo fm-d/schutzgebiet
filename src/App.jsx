@@ -29,7 +29,7 @@ const PRESENTED_WORKS = [
 ];
 
 function App() {
-  const [theme, setTheme] = useState("bright");
+  const [theme, setTheme] = useState("dark");
   const [mobilePage, setMobilePage] = useState("home");
 
   const isBright = theme === "bright";
