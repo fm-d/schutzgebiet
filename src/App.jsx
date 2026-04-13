@@ -154,9 +154,7 @@ function DesktopCatalogueColumn({ palette }) {
       className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
       style={{ color: palette.text }}
     >
-      <div className="flex items-start">
-        <h1 className="pt-1 text-[24px] leading-none">CATALOGUE</h1>
-      </div>
+      <div className="pt-1 text-[24px] leading-none">CATALOGUE</div>
 
       <CatalogueContent />
     </div>
@@ -289,8 +287,8 @@ function CatalogueContent({ mobile = false }) {
 
 function CatalogueItem({ label, text, href }) {
   return (
-    <div className="flex flex-wrap gap-x-2">
-      <span>{label}</span>
+    <div className="leading-[1.25]">
+      <div>{label}</div>
       <a href={href} target="_blank" rel="noreferrer">
         {text}
       </a>
