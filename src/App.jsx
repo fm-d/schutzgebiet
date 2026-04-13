@@ -122,9 +122,6 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
       </div>
 
       <nav className="flex flex-col items-end gap-2 text-[24px] leading-none">
-        <a href="#catalogue" style={{ color: palette.external }}>
-          CATALOGUE-&gt;
-        </a>
         <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SPOTIFY-&gt;
         </a>
@@ -151,12 +148,14 @@ function DesktopCatalogueColumn({ palette }) {
   return (
     <div
       id="catalogue"
-      className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
+      className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col"
       style={{ color: palette.text }}
     >
       <div className="pt-1 text-[24px] leading-none">CATALOGUE</div>
 
-      <CatalogueContent />
+      <div className="mt-10">
+        <CatalogueContent />
+      </div>
     </div>
   );
 }
