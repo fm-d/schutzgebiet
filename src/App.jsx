@@ -26,19 +26,6 @@ const PRESENTED_WORKS = [
   { label: "☆7571 -", text: "Demos 4 You (2026)", href: "#" },
 ];
 
-const EXTERNAL_LINKS = [
-  { label: "CATALOGUE->", href: "#catalogue" },
-  { label: "SPOTIFY->", href: "#" },
-  { label: "BANDCAMP->", href: "#" },
-  { label: "NINA PROTOCOL->", href: "#" },
-  { label: "SOUNDCLOUD->", href: "#" },
-];
-
-const FOOTER_LINKS = [
-  { label: "CONTACT->", href: "mailto:f@schutzgebiet.at" },
-  { label: "LEGAL->", href: "#legal" },
-];
-
 function App() {
   const [theme, setTheme] = useState("bright");
   const [mobilePage, setMobilePage] = useState("home");
@@ -49,7 +36,7 @@ function App() {
     () => ({
       background: isBright ? "#EBF1F4" : "#061A44",
       text: isBright ? "#061A44" : "#EBF1F4",
-      accent: "#D30202",
+      external: "#D30202",
     }),
     [isBright]
   );
@@ -121,36 +108,38 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
       style={{ color: palette.text }}
     >
       <div className="flex items-start justify-between">
+        <ThemeButton theme={theme} onClick={onThemeToggle} />
         <img
           src={logoLarge}
           alt="Schutzgebiet"
           className="h-auto w-[150px]"
           draggable="false"
         />
-        <ThemeButton theme={theme} onClick={onThemeToggle} />
       </div>
 
-      <div className="whitespace-pre-line text-[32px] leading-[1.18]">
+      <div className="whitespace-pre-line text-right text-[20px] leading-[1.2]">
         {HOME_INFO}
       </div>
 
-      <nav className="flex flex-col items-end gap-2 text-[32px] leading-none">
-        <a href="#catalogue">CATALOGUE-&gt;</a>
-        <a href="#" target="_blank" rel="noreferrer">
+      <nav className="flex flex-col items-end gap-2 text-[24px] leading-none">
+        <a href="#catalogue" style={{ color: palette.external }}>
+          CATALOGUE-&gt;
+        </a>
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SPOTIFY-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           BANDCAMP-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           NINA PROTOCOL-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SOUNDCLOUD-&gt;
         </a>
       </nav>
 
-      <div className="flex items-end justify-between text-[32px] leading-none">
+      <div className="flex items-end justify-between text-[24px] leading-none">
         <a href="mailto:f@schutzgebiet.at">CONTACT-&gt;</a>
         <a href="#legal">LEGAL-&gt;</a>
       </div>
@@ -165,14 +154,8 @@ function DesktopCatalogueColumn({ palette }) {
       className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
       style={{ color: palette.text }}
     >
-      <div className="flex items-start gap-5">
-        <img
-          src={logoLarge}
-          alt="Schutzgebiet"
-          className="h-auto w-[150px]"
-          draggable="false"
-        />
-        <h1 className="pt-1 text-[32px] leading-none">CATALOGUE</h1>
+      <div className="flex items-start">
+        <h1 className="pt-1 text-[24px] leading-none">CATALOGUE</h1>
       </div>
 
       <CatalogueContent />
@@ -196,29 +179,29 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         <ThemeButton theme={theme} onClick={onThemeToggle} />
       </div>
 
-      <div className="whitespace-pre-line text-[24px] leading-[1.3]">
+      <div className="whitespace-pre-line text-[20px] leading-[1.3]">
         {HOME_INFO}
       </div>
 
-      <nav className="flex flex-col items-end gap-3 text-[32px] leading-none">
-        <a href="#catalogue" onClick={onCatalogueClick}>
+      <nav className="flex flex-col items-end gap-3 text-[24px] leading-none">
+        <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
           CATALOGUE-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SPOTIFY-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           BANDCAMP-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           NINA PROTOCOL-&gt;
         </a>
-        <a href="#" target="_blank" rel="noreferrer">
+        <a href="#" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
           SOUNDCLOUD-&gt;
         </a>
       </nav>
 
-      <div className="flex items-end justify-between text-[32px] leading-none">
+      <div className="flex items-end justify-between text-[24px] leading-none">
         <a href="mailto:f@schutzgebiet.at">CONTACT-&gt;</a>
         <a href="#legal">LEGAL-&gt;</a>
       </div>
@@ -242,7 +225,7 @@ function MobileCataloguePage({ palette, onLogoClick }) {
       </a>
 
       <div className="mt-8">
-        <h1 className="text-[32px] leading-none">CATALOGUE</h1>
+        <h1 className="text-[24px] leading-none">CATALOGUE</h1>
       </div>
 
       <div className="mt-14">
@@ -253,13 +236,9 @@ function MobileCataloguePage({ palette, onLogoClick }) {
 }
 
 function CatalogueContent({ mobile = false }) {
-  const headingClass = mobile
-    ? "text-[32px] leading-none"
-    : "text-[32px] leading-none";
+  const headingClass = "text-[24px] leading-none";
   const blockClass = mobile ? "space-y-12" : "space-y-10";
-  const listClass = mobile
-    ? "mt-3 space-y-1 text-[20px] leading-[1.35]"
-    : "mt-3 space-y-1 text-[20px] leading-[1.35]";
+  const listClass = "mt-3 space-y-1 text-[16px] leading-[1.35]";
 
   return (
     <div className={blockClass}>
