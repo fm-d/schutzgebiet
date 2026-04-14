@@ -349,7 +349,7 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         </a>
       </nav>
 
-      <div className="flex justify-end text-[24px] leading-none">
+      <div className="flex justify-end text-[16px] leading-none">
         <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
       </div>
     </div>
@@ -453,7 +453,7 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         </a>
       </nav>
 
-      <div className="flex items-end justify-between text-[24px] leading-none">
+      <div className="flex items-end justify-between text-[16px] leading-none">
         <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
         <a href="#legal">LEGAL→</a>
       </div>
@@ -541,7 +541,9 @@ function CatalogueContent({
   onOpenMedia,
 }) {
   const headingClass = "text-[24px] leading-none";
-  const listClass = "mt-3 space-y-1 text-[16px] leading-[1.35]";
+  const listClass = mobile
+    ? "mt-3 space-y-1 text-[14px] leading-[1.35]"
+    : "mt-3 space-y-1 text-[16px] leading-[1.35]";
 
   if (desktop) {
     return (
@@ -593,7 +595,7 @@ function CatalogueContent({
           </div>
         </section>
 
-        <div className="text-[24px] leading-none">
+        <div className="text-[16px] leading-none">
           <a href="#legal">LEGAL→</a>
         </div>
       </div>
