@@ -311,7 +311,7 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         />
       </div>
 
-      <div className="mt-10 whitespace-pre-line text-right text-[16px] leading-[1.32]">
+      <div className="mt-12 whitespace-pre-line text-right text-[16px] leading-[1.32]">
         {HOME_INFO}
       </div>
 
@@ -416,7 +416,7 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         {HOME_INFO}
       </div>
 
-      <nav className="flex flex-col items-end gap-3 text-[24px] leading-none">
+      <nav className="flex flex-col items-start gap-3 text-[24px] leading-none">
         <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
           CATALOGUE→
         </a>
@@ -487,10 +487,12 @@ function MobileCataloguePage({
       </div>
 
       <div className="mt-8">
-        <h1 className="text-[24px] leading-none">CATALOGUE</h1>
+        <h1 className="text-[24px] leading-none underline">
+          CATALOGUE
+        </h1>
       </div>
 
-      <div className="mt-14">
+      <div className="mt-7">
         <CatalogueContent
           mobile
           palette={palette}
@@ -599,7 +601,7 @@ function CatalogueContent({
     );
   }
 
-  const blockClass = mobile ? "space-y-12" : "space-y-10";
+  const blockClass = mobile ? "space-y-5" : "space-y-10";
 
   return (
     <div className={blockClass}>
@@ -748,6 +750,21 @@ function CatalogueStackedItem({ item, palette, activeMedia, onOpenMedia }) {
 
 function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
   const embedUrl = getEmbedUrl(activeMedia, theme);
+  const [isEmbedVisible, setIsEmbedVisible] = useState(false);
+
+  useEffect(() => {
+    setIsEmbedVisible(false);
+
+    const frame = requestAnimationFrame(() => {
+      const frame2 = requestAnimationFrame(() => {
+        setIsEmbedVisible(true);
+      });
+
+      return () => cancelAnimationFrame(frame2);
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [activeMedia?.id, embedUrl]);
   const openLabel =
     activeMedia.platform === "bandcamp" ? "OPEN IN BANDCAMP" : "OPEN IN SOUNDCLOUD";
 
@@ -763,13 +780,15 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
     >
       <div className="min-h-0 flex-1 border-b" style={{ borderColor: palette.selectionBackground }}>
         <iframe
+          key={activeMedia.id}
           title={activeMedia.text}
           src={embedUrl}
-          className="h-full w-full"
+          className="h-full w-full transition-opacity duration-300 ease-out"
           style={{
             border: 0,
             display: "block",
             backgroundColor: palette.selectionBackground,
+            opacity: isEmbedVisible ? 1 : 0,
           }}
           allow="autoplay"
           scrolling="no"
