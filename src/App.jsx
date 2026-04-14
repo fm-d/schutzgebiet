@@ -294,7 +294,7 @@ function CatalogueContent({ mobile = false, desktop = false }) {
         </section>
 
         <div className="text-[24px] leading-none">
-          <a href="#legal">LEGAL-&gt;</a>
+          <a href="#legal">LEGAL→</a>
         </div>
       </div>
     );
