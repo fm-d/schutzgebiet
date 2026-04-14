@@ -789,7 +789,10 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
         backgroundColor: palette.selectionBackground,
       }}
     >
-      <div className="min-h-0 flex-1 border-b" style={{ borderColor: palette.selectionBackground }}>
+      <div
+        className="relative min-h-0 flex-1 border-b"
+        style={{ borderColor: palette.selectionBackground }}
+      >
         <iframe
           key={activeMedia.id}
           title={activeMedia.text}
@@ -803,6 +806,14 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
           }}
           allow="autoplay"
           scrolling="no"
+        />
+
+        <div
+          className="pointer-events-none absolute top-0 left-0 right-0 z-10"
+          style={{
+            height: "3px",
+            backgroundColor: palette.selectionBackground,
+          }}
         />
       </div>
 
