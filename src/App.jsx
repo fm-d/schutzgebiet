@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import logoLarge from "./assets/logo-150px.svg";
+import logoLargeHover from "./assets/logo-150px-hover.svg";
 import buttonBrightToDark from "./assets/button-bright-to-dark.svg";
 import buttonDarkToBright from "./assets/button-dark-to-bright.svg";
 
@@ -305,6 +306,12 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
           alt="Schutzgebiet"
           className="h-auto w-[150px]"
           draggable="false"
+          onMouseEnter={(e) => {
+            e.currentTarget.src = logoLargeHover;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.src = logoLarge;
+          }}
         />
       </div>
 
