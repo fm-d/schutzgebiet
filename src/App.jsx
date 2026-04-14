@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState, useRef } from "react";
 import logoLarge from "./assets/logo-150px.svg";
-import logoSmall from "./assets/logo-75px.svg";
 import buttonBrightToDark from "./assets/button-bright-to-dark.svg";
 import buttonDarkToBright from "./assets/button-dark-to-bright.svg";
 
@@ -267,23 +266,16 @@ function App() {
         </div>
 
         <div className="min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] md:hidden">
-          {mobilePage === "home" ? (
-            <MobileHomePage
-              palette={palette}
-              theme={theme}
-              onThemeToggle={handleThemeToggle}
-              onCatalogueClick={handleCatalogueClick}
-            />
-          ) : (
-            <MobileCataloguePage
-              palette={palette}
-              theme={theme}
-              onThemeToggle={handleThemeToggle}
-              onLogoClick={handleLogoClick}
-              activeMedia={activeMedia}
-              onOpenMedia={handleOpenMedia}
-            />
-          )}
+          <MobilePage
+            palette={palette}
+            theme={theme}
+            mobilePage={mobilePage}
+            onThemeToggle={handleThemeToggle}
+            onCatalogueClick={handleCatalogueClick}
+            onLogoClick={handleLogoClick}
+            activeMedia={activeMedia}
+            onOpenMedia={handleOpenMedia}
+          />
         </div>
       </div>
 
@@ -401,81 +393,18 @@ function DesktopMediaColumn({
   );
 }
 
-function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
-  return (
-    <div
-      className="flex min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] flex-col justify-between"
-      style={{
-        color: palette.text,
-        paddingBottom: "env(safe-area-inset-bottom)",
-      }}
-    >
-      <div className="flex items-start justify-between">
-        <img
-          src={logoLarge}
-          alt="Schutzgebiet"
-          className="h-auto w-[112px]"
-          draggable="false"
-        />
-        <ThemeButton theme={theme} onClick={onThemeToggle} />
-      </div>
-
-      <div className="whitespace-pre-line text-[16px] leading-[1.32]">
-        {HOME_INFO}
-      </div>
-
-      <nav className="flex flex-col items-start gap-3 text-[24px] leading-none">
-        <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
-          CATALOGUE→
-        </a>
-        <span
-          className="line-through no-underline"
-          style={{ color: palette.external, textDecorationLine: "line-through" }}
-        >
-          SPOTIFY→
-        </span>
-        <a
-          href="https://schutzgebiet.bandcamp.com/"
-          target="_blank"
-          rel="noreferrer"
-          style={{ color: palette.external }}
-        >
-          BANDCAMP→
-        </a>
-        <a
-          href="https://www.ninaprotocol.com/profiles/schutzgebiet/"
-          target="_blank"
-          rel="noreferrer"
-          style={{ color: palette.external }}
-        >
-          NINA PROTOCOL→
-        </a>
-        <a
-          href="https://www.soundcloud.com/schutzgebiet/"
-          target="_blank"
-          rel="noreferrer"
-          style={{ color: palette.external }}
-        >
-          SOUNDCLOUD→
-        </a>
-      </nav>
-
-      <div className="flex items-end justify-between text-[16px] leading-none">
-        <a href="mailto:f@schutzgebiet.at">CONTACT</a>
-        <a href="#legal">LEGAL</a>
-      </div>
-    </div>
-  );
-}
-
-function MobileCataloguePage({
+function MobilePage({
   palette,
   theme,
+  mobilePage,
   onThemeToggle,
+  onCatalogueClick,
   onLogoClick,
   activeMedia,
   onOpenMedia,
 }) {
+  const isCatalogue = mobilePage === "catalogue";
+
   return (
     <div
       className="flex min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] flex-col"
@@ -485,11 +414,19 @@ function MobileCataloguePage({
       }}
     >
       <div className="flex items-start justify-between">
-        <a href="#home" onClick={onLogoClick} className="w-fit">
+        <a
+          href={isCatalogue ? "#home" : undefined}
+          onClick={isCatalogue ? onLogoClick : undefined}
+          className="w-fit"
+        >
           <img
-            src={logoSmall}
+            src={logoLarge}
             alt="Schutzgebiet"
-            className="h-auto w-[75px]"
+            className="h-auto transition-[width] duration-300 ease-out"
+            style={{
+              width: isCatalogue ? "75px" : "112px",
+              willChange: "width",
+            }}
             draggable="false"
           />
         </a>
@@ -497,21 +434,70 @@ function MobileCataloguePage({
         <ThemeButton theme={theme} onClick={onThemeToggle} />
       </div>
 
-      <div className="mt-8">
-        <h1 className="text-[24px] leading-none underline">
-          CATALOGUE
-        </h1>
-      </div>
+      {isCatalogue ? (
+        <>
+          <div className="mt-8">
+            <h1 className="text-[24px] leading-none underline">CATALOGUE</h1>
+          </div>
 
-      <div className="mt-7">
-        <CatalogueContent
-          mobile
-          palette={palette}
-          theme={theme}
-          activeMedia={activeMedia}
-          onOpenMedia={onOpenMedia}
-        />
-      </div>
+          <div className="mt-7">
+            <CatalogueContent
+              mobile
+              palette={palette}
+              theme={theme}
+              activeMedia={activeMedia}
+              onOpenMedia={onOpenMedia}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="mt-auto whitespace-pre-line text-[16px] leading-[1.32]">
+            {HOME_INFO}
+          </div>
+
+          <nav className="mt-auto flex flex-col items-start gap-3 text-[24px] leading-none">
+            <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
+              CATALOGUE→
+            </a>
+            <span
+              className="line-through no-underline"
+              style={{ color: palette.external, textDecorationLine: "line-through" }}
+            >
+              SPOTIFY→
+            </span>
+            <a
+              href="https://schutzgebiet.bandcamp.com/"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: palette.external }}
+            >
+              BANDCAMP→
+            </a>
+            <a
+              href="https://www.ninaprotocol.com/profiles/schutzgebiet/"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: palette.external }}
+            >
+              NINA PROTOCOL→
+            </a>
+            <a
+              href="https://www.soundcloud.com/schutzgebiet/"
+              target="_blank"
+              rel="noreferrer"
+              style={{ color: palette.external }}
+            >
+              SOUNDCLOUD→
+            </a>
+          </nav>
+
+          <div className="mt-auto flex items-end justify-between text-[16px] leading-none">
+            <a href="mailto:f@schutzgebiet.at">CONTACT</a>
+            <a href="#legal">LEGAL</a>
+          </div>
+        </>
+      )}
     </div>
   );
 }
