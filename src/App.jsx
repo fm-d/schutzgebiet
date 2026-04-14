@@ -755,7 +755,7 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
 
   return (
     <div
-      className="flex h-full flex-col border"
+      className="box-border flex h-full w-full flex-col overflow-hidden border"
       style={{
         borderColor: palette.selectionBackground,
         backgroundColor: palette.selectionBackground,
