@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import logoLarge from "./assets/logo-150px.svg";
 import logoSmall from "./assets/logo-75px.svg";
 import buttonBrightToDark from "./assets/button-bright-to-dark.svg";
@@ -12,27 +12,100 @@ artist collective
 started 2026 in Vienna.`;
 
 const RELEASES = [
-  { label: "SG001:", text: "DUUN - S/T (2026)", href: "https://schutzgebiet.bandcamp.com/album/s-t-2026" },
-  { label: "SG00X:", text: "v7c - Horizon’s Blue Wing (2026)", href: "#" },
-  { label: "SG00X:", text: "F.M. Deutsch - duun-2 pres. KABALAH (2026)", href: "#" },
-  { label: "SG00X:", text: "Ora Et Labora - Covercompilation (2026)", href: "#" },
-  { label: "SG00X:", text: "Tria - LP (2026)", href: "#" },
+  {
+    id: "sg001",
+    label: "SG001:",
+    text: "DUUN - S/T (2026)",
+    href: "https://schutzgebiet.bandcamp.com/album/s-t-2026",
+    platform: "bandcamp",
+    embedUrl:
+      "https://bandcamp.com/EmbeddedPlayer/album=3165251504/size=large/bgcol=ebf1f4/linkcol=061a44/package=238850783/transparent=true/",
+
+  },
+  {
+    id: "sg00x-v7c",
+    label: "SG00X:",
+    text: "v7c - Horizon’s Blue Wing (2026)",
+    href: "#",
+  },
+  {
+    id: "sg00x-fmd",
+    label: "SG00X:",
+    text: "F.M. Deutsch - duun-2 pres. KABALAH (2026)",
+    href: "#",
+  },
+  {
+    id: "sg00x-oel",
+    label: "SG00X:",
+    text: "Ora Et Labora - Covercompilation (2026)",
+    href: "#",
+  },
+  {
+    id: "sg00x-tria",
+    label: "SG00X:",
+    text: "Tria - LP (2026)",
+    href: "#",
+  },
 ];
 
 const MIXES = [
-  { label: "SCHUTZ MIX 001:", text: "Studio am Stacheldraht", href: "https://soundcloud.com/schutzgebiet/schutz-mix-1-studio-am-stacheldraht" },
-  { label: "SCHUTZ MIX 002:", text: "Hitparade", href: "https://soundcloud.com/schutzgebiet/schutz-mix-002" },
-  { label: "SCHUTZ MIX 003:", text: "Ghosted by the USA", href: "https://soundcloud.com/schutzgebiet/schutz-mix-003" },
-  { label: "SCHUTZ MIX 004:", text: "Lend a Hand and Lift Me", href: "https://soundcloud.com/schutzgebiet/schutz-mix-004" },
+  {
+    id: "mix001",
+    label: "SCHUTZ MIX 001:",
+    text: "Studio am Stacheldraht",
+    href: "https://soundcloud.com/schutzgebiet/schutz-mix-1-studio-am-stacheldraht",
+    platform: "soundcloud",
+    embedUrl:
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2246564714&color=%23d30202&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
+  },
+  {
+    id: "mix002",
+    label: "SCHUTZ MIX 002:",
+    text: "Hitparade",
+    href: "https://soundcloud.com/schutzgebiet/schutz-mix-002",
+    platform: "soundcloud",
+    embedUrl:
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2256196379&color=%23d30202&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
+  },
+  {
+    id: "mix003",
+    label: "SCHUTZ MIX 003:",
+    text: "Ghosted by the USA",
+    href: "https://soundcloud.com/schutzgebiet/schutz-mix-003",
+    platform: "soundcloud",
+    embedUrl:
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2256248570&color=%23d30202&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
+  },
+  {
+    id: "mix004",
+    label: "SCHUTZ MIX 004:",
+    text: "Lend a Hand and Lift Me",
+    href: "https://soundcloud.com/schutzgebiet/schutz-mix-004",
+    platform: "soundcloud",
+    embedUrl:
+      "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A2268996284&color=%23d30202&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true&visual=true",
+  },
 ];
 
 const PRESENTED_WORKS = [
-  { label: "☆7571 -", text: "Demos 4 You (2026)", href: "#" },
+  {
+    id: "7571",
+    label: "☆7571 -",
+    text: "Demos 4 You (2026)",
+    href: "https://7571.bandcamp.com/album/demos-4-you-2025",
+    platform: "bandcamp",
+    embedUrl:
+      "https://bandcamp.com/EmbeddedPlayer/album=583838162/size=large/bgcol=ebf1f4/linkcol=061a44/package=752024074/transparent=true/",
+  },
 ];
 
 function App() {
   const [theme, setTheme] = useState("dark");
   const [mobilePage, setMobilePage] = useState("home");
+  const [activeMedia, setActiveMedia] = useState(null);
+  const [visibleMedia, setVisibleMedia] = useState(null);
+  const [isMediaVisible, setIsMediaVisible] = useState(false);
+  const mediaRef = useRef(null);
 
   const isBright = theme === "bright";
 
@@ -41,6 +114,9 @@ function App() {
       background: isBright ? "#EBF1F4" : "#061A44",
       text: isBright ? "#061A44" : "#EBF1F4",
       external: "#D30202",
+      selectionBackground: isBright ? "#061A44" : "#EBF1F4",
+      selectionText: isBright ? "#EBF1F4" : "#061A44",
+      overlayBackground: isBright ? "rgba(235, 241, 244, 0.96)" : "rgba(6, 26, 68, 0.96)",
     }),
     [isBright]
   );
@@ -51,6 +127,65 @@ function App() {
       themeColorMeta.setAttribute("content", palette.background);
     }
   }, [palette.background]);
+
+  useEffect(() => {
+    document.body.style.overflow = activeMedia && window.innerWidth < 768 ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [activeMedia]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (!activeMedia) return;
+
+      const target = event.target;
+
+      if (!(target instanceof Element)) return;
+
+      if (
+        target.closest("a") ||
+        target.closest("button")
+      ) {
+        return;
+      }
+
+      if (mediaRef.current && !mediaRef.current.contains(target)) {
+        setActiveMedia(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeMedia]);
+
+  useEffect(() => {
+    if (activeMedia) {
+      setIsMediaVisible(false);
+      setVisibleMedia(activeMedia);
+
+      const frame = requestAnimationFrame(() => {
+        const frame2 = requestAnimationFrame(() => {
+          setIsMediaVisible(true);
+        });
+
+        return () => cancelAnimationFrame(frame2);
+      });
+
+      return () => cancelAnimationFrame(frame);
+    }
+
+    setIsMediaVisible(false);
+
+    const timeout = setTimeout(() => {
+      setVisibleMedia(null);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [activeMedia]);
 
   const handleThemeToggle = () => {
     setTheme((prev) => (prev === "bright" ? "dark" : "bright"));
@@ -71,7 +206,17 @@ function App() {
     if (isMobile) {
       event.preventDefault();
       setMobilePage("home");
+      setActiveMedia(null);
     }
+  };
+
+  const handleOpenMedia = (item) => {
+    if (!item.embedUrl) return;
+    setActiveMedia(item);
+  };
+
+  const handleCloseMedia = () => {
+    setActiveMedia(null);
   };
 
   return (
@@ -83,13 +228,35 @@ function App() {
       }}
     >
       <div className="mx-auto min-h-screen px-5 py-5 md:px-5 md:py-5">
-        <div className="hidden min-h-[calc(100vh-40px)] justify-center gap-5 md:flex">
-          <DesktopHomeColumn
-            palette={palette}
-            theme={theme}
-            onThemeToggle={handleThemeToggle}
-          />
-          <DesktopCatalogueColumn palette={palette} />
+        <div className="relative hidden h-[calc(100vh-40px)] md:block">
+          <div className="flex h-full justify-center gap-5">
+            <DesktopHomeColumn
+              palette={palette}
+              theme={theme}
+              onThemeToggle={handleThemeToggle}
+            />
+            <DesktopCatalogueColumn
+              palette={palette}
+              theme={theme}
+              activeMedia={activeMedia}
+              onOpenMedia={handleOpenMedia}
+            />
+          </div>
+
+          {visibleMedia ? (
+            <div
+              className="absolute top-0 left-[calc(50%+10px+25vw)] h-full transition-opacity duration-300 ease-out"
+              style={{ opacity: isMediaVisible ? 1 : 0 }}
+            >
+              <DesktopMediaColumn
+                palette={palette}
+                theme={theme}
+                activeMedia={visibleMedia}
+                onClose={handleCloseMedia}
+                mediaRef={mediaRef}
+              />
+            </div>
+          ) : null}
         </div>
 
         <div className="min-h-[calc(100vh-40px)] md:hidden">
@@ -103,11 +270,25 @@ function App() {
           ) : (
             <MobileCataloguePage
               palette={palette}
+              theme={theme}
               onLogoClick={handleLogoClick}
+              activeMedia={activeMedia}
+              onOpenMedia={handleOpenMedia}
             />
           )}
         </div>
       </div>
+
+      {visibleMedia ? (
+        <MobileMediaOverlay
+          palette={palette}
+          theme={theme}
+          activeMedia={visibleMedia}
+          onClose={handleCloseMedia}
+          isVisible={isMediaVisible}
+
+        />
+      ) : null}
     </div>
   );
 }
@@ -115,7 +296,7 @@ function App() {
 function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
   return (
     <div
-      className="flex min-h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
+      className="flex h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
       style={{ color: palette.text }}
     >
       <div className="flex items-start justify-between">
@@ -128,7 +309,7 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         />
       </div>
 
-      <div className="whitespace-pre-line text-right text-[20px] leading-[1.2]">
+      <div className="whitespace-pre-line text-right text-[16px] leading-[1.35]">
         {HOME_INFO}
       </div>
 
@@ -139,13 +320,28 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         >
           SPOTIFY→
         </span>
-        <a href="https://schutzgebiet.bandcamp.com/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a
+          href="https://schutzgebiet.bandcamp.com/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: palette.external }}
+        >
           BANDCAMP→
         </a>
-        <a href="https://www.ninaprotocol.com/profiles/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a
+          href="https://www.ninaprotocol.com/profiles/schutzgebiet/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: palette.external }}
+        >
           NINA PROTOCOL→
         </a>
-        <a href="https://www.soundcloud.com/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a
+          href="https://www.soundcloud.com/schutzgebiet/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: palette.external }}
+        >
           SOUNDCLOUD→
         </a>
       </nav>
@@ -157,14 +353,43 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
   );
 }
 
-function DesktopCatalogueColumn({ palette }) {
+function DesktopCatalogueColumn({ palette, theme, activeMedia, onOpenMedia }) {
   return (
     <div
       id="catalogue"
       className="flex h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col"
       style={{ color: palette.text }}
     >
-      <CatalogueContent desktop />
+      <CatalogueContent
+        desktop
+        palette={palette}
+        theme={theme}
+        activeMedia={activeMedia}
+        onOpenMedia={onOpenMedia}
+      />
+    </div>
+  );
+}
+
+function DesktopMediaColumn({
+  palette,
+  theme,
+  activeMedia,
+  onClose,
+  mediaRef,
+}) {
+  return (
+    <div
+      ref={mediaRef}
+      className="flex h-[calc(100vh-40px)] w-[calc(25vw-30px)] min-w-[290px] flex-col"
+    >
+      <MediaPanel
+        palette={palette}
+        theme={theme}
+        activeMedia={activeMedia}
+        onClose={onClose}
+        mobile={false}
+      />
     </div>
   );
 }
@@ -185,7 +410,7 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         <ThemeButton theme={theme} onClick={onThemeToggle} />
       </div>
 
-      <div className="whitespace-pre-line text-[20px] leading-[1.3]">
+      <div className="whitespace-pre-line text-[16px] leading-[1.35]">
         {HOME_INFO}
       </div>
 
@@ -199,13 +424,28 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         >
           SPOTIFY→
         </span>
-        <a href="https://schutzgebiet.bandcamp.com/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a
+          href="https://schutzgebiet.bandcamp.com/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: palette.external }}
+        >
           BANDCAMP→
         </a>
-        <a href="https://www.ninaprotocol.com/profiles/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a
+          href="https://www.ninaprotocol.com/profiles/schutzgebiet/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: palette.external }}
+        >
           NINA PROTOCOL→
         </a>
-        <a href="https://www.soundcloud.com/schutzgebiet/" target="_blank" rel="noreferrer" style={{ color: palette.external }}>
+        <a
+          href="https://www.soundcloud.com/schutzgebiet/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: palette.external }}
+        >
           SOUNDCLOUD→
         </a>
       </nav>
@@ -218,7 +458,13 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
   );
 }
 
-function MobileCataloguePage({ palette, onLogoClick }) {
+function MobileCataloguePage({
+  palette,
+  theme,
+  onLogoClick,
+  activeMedia,
+  onOpenMedia,
+}) {
   return (
     <div
       className="flex min-h-[calc(100vh-40px)] flex-col"
@@ -238,13 +484,54 @@ function MobileCataloguePage({ palette, onLogoClick }) {
       </div>
 
       <div className="mt-14">
-        <CatalogueContent mobile />
+        <CatalogueContent
+          mobile
+          palette={palette}
+          theme={theme}
+          activeMedia={activeMedia}
+          onOpenMedia={onOpenMedia}
+        />
       </div>
     </div>
   );
 }
 
-function CatalogueContent({ mobile = false, desktop = false }) {
+function MobileMediaOverlay({
+  palette,
+  theme,
+  activeMedia,
+  onClose,
+  isVisible,
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-50 md:hidden transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
+      style={{
+        backgroundColor: palette.overlayBackground,
+        opacity: isVisible ? 1 : 0,
+      }}
+    >
+      <div className="h-full w-full p-5">
+        <MediaPanel
+          palette={palette}
+          theme={theme}
+          activeMedia={activeMedia}
+          onClose={onClose}
+          mobile
+        />
+      </div>
+    </div>
+  );
+}
+
+function CatalogueContent({
+  mobile = false,
+  desktop = false,
+  palette,
+  theme,
+  activeMedia,
+  onOpenMedia,
+}) {
   const headingClass = "text-[24px] leading-none";
   const listClass = "mt-3 space-y-1 text-[16px] leading-[1.35]";
 
@@ -258,10 +545,11 @@ function CatalogueContent({ mobile = false, desktop = false }) {
           <div className={listClass}>
             {RELEASES.map((item) => (
               <CatalogueItem
-                key={item.label + item.text}
-                label={item.label}
-                text={item.text}
-                href={item.href}
+                key={item.id}
+                item={item}
+                palette={palette}
+                activeMedia={activeMedia}
+                onOpenMedia={onOpenMedia}
               />
             ))}
           </div>
@@ -272,10 +560,11 @@ function CatalogueContent({ mobile = false, desktop = false }) {
           <div className={listClass}>
             {MIXES.map((item) => (
               <CatalogueStackedItem
-                key={item.label + item.text}
-                label={item.label}
-                text={item.text}
-                href={item.href}
+                key={item.id}
+                item={item}
+                palette={palette}
+                activeMedia={activeMedia}
+                onOpenMedia={onOpenMedia}
               />
             ))}
           </div>
@@ -286,10 +575,11 @@ function CatalogueContent({ mobile = false, desktop = false }) {
           <div className={listClass}>
             {PRESENTED_WORKS.map((item) => (
               <CatalogueItem
-                key={item.label + item.text}
-                label={item.label}
-                text={item.text}
-                href={item.href}
+                key={item.id}
+                item={item}
+                palette={palette}
+                activeMedia={activeMedia}
+                onOpenMedia={onOpenMedia}
               />
             ))}
           </div>
@@ -311,10 +601,11 @@ function CatalogueContent({ mobile = false, desktop = false }) {
         <div className={listClass}>
           {RELEASES.map((item) => (
             <CatalogueItem
-              key={item.label + item.text}
-              label={item.label}
-              text={item.text}
-              href={item.href}
+              key={item.id}
+              item={item}
+              palette={palette}
+              activeMedia={activeMedia}
+              onOpenMedia={onOpenMedia}
             />
           ))}
         </div>
@@ -325,10 +616,11 @@ function CatalogueContent({ mobile = false, desktop = false }) {
         <div className={listClass}>
           {MIXES.map((item) => (
             <CatalogueStackedItem
-              key={item.label + item.text}
-              label={item.label}
-              text={item.text}
-              href={item.href}
+              key={item.id}
+              item={item}
+              palette={palette}
+              activeMedia={activeMedia}
+              onOpenMedia={onOpenMedia}
             />
           ))}
         </div>
@@ -339,10 +631,11 @@ function CatalogueContent({ mobile = false, desktop = false }) {
         <div className={listClass}>
           {PRESENTED_WORKS.map((item) => (
             <CatalogueItem
-              key={item.label + item.text}
-              label={item.label}
-              text={item.text}
-              href={item.href}
+              key={item.id}
+              item={item}
+              palette={palette}
+              activeMedia={activeMedia}
+              onOpenMedia={onOpenMedia}
             />
           ))}
         </div>
@@ -351,24 +644,153 @@ function CatalogueContent({ mobile = false, desktop = false }) {
   );
 }
 
-function CatalogueItem({ label, text, href }) {
+function CatalogueItem({ item, palette, activeMedia, onOpenMedia }) {
+  const isActive = activeMedia?.id === item.id;
+  const isEmbedded = Boolean(item.embedUrl);
+
+  if (isEmbedded) {
+    return (
+      <button
+        type="button"
+        onClick={() => onOpenMedia(item)}
+        className="block w-full text-left leading-[1.25] transition-colors duration-300 ease-out"
+        style={{
+          backgroundColor: isActive
+            ? palette.selectionBackground
+            : "transparent",
+
+          color: isActive
+            ? palette.selectionText
+            : "inherit",
+
+          transition: "background-color 300ms ease-out, color 300ms ease-out",
+
+          marginLeft: isActive ? "-3px" : "0px",
+          paddingLeft: isActive ? "3px" : "0px",
+
+          width: isActive ? "calc(100% + 3px)" : "100%",
+          paddingRight: isActive ? "3px" : "0px",
+        }}
+      >
+        <div>{item.label}</div>
+        <div className="underline hover:no-underline">{item.text}</div>
+      </button>
+    );
+  }
+
+  const isPlaceholder = item.href === "#";
+
   return (
     <div className="leading-[1.25]">
-      <div>{label}</div>
-      <a href={href} target="_blank" rel="noreferrer">
-        {text}
-      </a>
+      <div>{item.label}</div>
+
+      {isPlaceholder ? (
+        <div>{item.text}</div>
+      ) : (
+        <a href={item.href} target="_blank" rel="noreferrer">
+          {item.text}
+        </a>
+      )}
     </div>
   );
 }
 
-function CatalogueStackedItem({ label, text, href }) {
+function CatalogueStackedItem({ item, palette, activeMedia, onOpenMedia }) {
+  const isActive = activeMedia?.id === item.id;
+  const isEmbedded = Boolean(item.embedUrl);
+
+  if (isEmbedded) {
+    return (
+      <button
+        type="button"
+        onClick={() => onOpenMedia(item)}
+        className="block w-full text-left leading-[1.25] transition-colors duration-300 ease-out"
+        style={{
+          backgroundColor: isActive ? palette.selectionBackground : "transparent",
+          color: isActive ? palette.selectionText : "inherit",
+          transition: "background-color 300ms ease-out, color 300ms ease-out",
+          marginLeft: isActive ? "-3px" : "0px",
+          paddingLeft: isActive ? "3px" : "0px",
+
+          width: isActive ? "calc(100% + 3px)" : "100%",
+          paddingRight: isActive ? "3px" : "0px",
+        }}
+      >
+        <div className="underline hover:no-underline">{item.label}</div>
+        <div>{item.text}</div>
+      </button>
+    );
+  }
+
+  const isPlaceholder = item.href === "#";
+
   return (
     <div className="leading-[1.25]">
-      <a href={href} target="_blank" rel="noreferrer">
-        {label}
-      </a>
-      <div>{text}</div>
+      {isPlaceholder ? (
+        <div>{item.label}</div>
+      ) : (
+        <a href={item.href} target="_blank" rel="noreferrer">
+          {item.label}
+        </a>
+      )}
+
+      <div>{item.text}</div>
+    </div>
+  );
+}
+
+function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
+  const embedUrl = getEmbedUrl(activeMedia, theme);
+  const openLabel =
+    activeMedia.platform === "bandcamp" ? "OPEN IN BANDCAMP" : "OPEN IN SOUNDCLOUD";
+
+  const actionTextClass = mobile ? "text-[16px] leading-none" : "text-[16px] leading-none";
+
+  return (
+    <div
+      className="flex h-full flex-col border"
+      style={{
+        borderColor: palette.selectionBackground,
+        backgroundColor: palette.selectionBackground,
+      }}
+    >
+      <div className="min-h-0 flex-1 border-b" style={{ borderColor: palette.selectionBackground }}>
+        <iframe
+          title={activeMedia.text}
+          src={embedUrl}
+          className="h-full w-full"
+          style={{
+            border: 0,
+            display: "block",
+            backgroundColor: palette.selectionBackground,
+          }}
+          allow="autoplay"
+          scrolling="no"
+        />
+      </div>
+
+      <div
+        className={`flex items-end justify-between px-5 py-2 ${actionTextClass}`}
+        style={{ color: palette.selectionText }}
+      >
+        <a
+          href={activeMedia.href}
+          target="_blank"
+          rel="noreferrer"
+          className="cursor-pointer hover:no-underline"
+          style={{ cursor: "pointer" }}
+        >
+          {openLabel}
+        </a>
+        <button
+          type="button"
+          onClick={onClose}
+          className="bg-transparent p-0 underline hover:no-underline cursor-pointer"
+          style={{ cursor: "pointer" }}
+        >
+          CLOSE
+        </button>
+      </div>
     </div>
   );
 }
@@ -391,6 +813,12 @@ function ThemeButton({ theme, onClick }) {
       />
     </button>
   );
+}
+
+function getEmbedUrl(item, theme) {
+  if (!item?.embedUrl) return "";
+  if (typeof item.embedUrl === "string") return item.embedUrl;
+  return item.embedUrl[theme] || item.embedUrl.dark || item.embedUrl.bright || "";
 }
 
 export default App;
