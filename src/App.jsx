@@ -128,6 +128,11 @@ function App() {
   }, [palette.background]);
 
   useEffect(() => {
+    document.documentElement.style.backgroundColor = palette.background;
+    document.body.style.backgroundColor = palette.background;
+  }, [palette.background]);
+
+  useEffect(() => {
     document.body.style.overflow = activeMedia && window.innerWidth < 768 ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
