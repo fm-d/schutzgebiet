@@ -196,7 +196,7 @@ function App() {
   };
 
   const handleCatalogueClick = (event) => {
-    const isMobile = window.innerWidth < 780;
+    const isMobile = window.innerWidth < 1280;
 
     if (isMobile) {
       event.preventDefault();
@@ -205,7 +205,7 @@ function App() {
   };
 
   const handleLogoClick = (event) => {
-    const isMobile = window.innerWidth < 780;
+    const isMobile = window.innerWidth < 1280;
 
     if (isMobile) {
       event.preventDefault();
@@ -231,8 +231,8 @@ function App() {
         color: palette.text,
       }}
     >
-      <div className="mx-auto min-h-[100dvh] px-5 py-5 md:px-5 md:py-5">
-        <div className="relative hidden h-[calc(100vh-40px)] md:block">
+      <div className="mx-auto min-h-[100dvh] px-5 py-5 xl:px-5 xl:py-5">
+        <div className="relative hidden h-[calc(100vh-40px)] xl:block">
           <div className="absolute top-0 left-0 z-10">
             <ThemeButton theme={theme} onClick={handleThemeToggle} />
           </div>
@@ -266,7 +266,7 @@ function App() {
           ) : null}
         </div>
 
-        <div className="min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] md:hidden">
+        <div className="min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] xl:hidden">
           <MobilePage
             palette={palette}
             theme={theme}
@@ -518,14 +518,14 @@ function MobileMediaOverlay({
 }) {
   return (
     <div
-      className="fixed inset-0 z-50 md:hidden transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
+      className="fixed inset-0 z-50 xl:hidden transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
       style={{
         backgroundColor: palette.overlayBackground,
         opacity: isVisible ? 1 : 0,
       }}
     >
       <div
-        className="h-full w-full p-5"
+        className="mx-auto h-full w-full max-w-[700px] p-5"
         style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}
       >
         <MediaPanel
