@@ -229,6 +229,9 @@ function App() {
     >
       <div className="mx-auto min-h-screen px-5 py-5 md:px-5 md:py-5">
         <div className="relative hidden h-[calc(100vh-40px)] md:block">
+          <div className="absolute top-0 left-0 z-10">
+            <ThemeButton theme={theme} onClick={handleThemeToggle} />
+          </div>
           <div className="flex h-full justify-center gap-5">
             <DesktopHomeColumn
               palette={palette}
@@ -271,6 +274,7 @@ function App() {
             <MobileCataloguePage
               palette={palette}
               theme={theme}
+              onThemeToggle={handleThemeToggle}
               onLogoClick={handleLogoClick}
               activeMedia={activeMedia}
               onOpenMedia={handleOpenMedia}
@@ -299,8 +303,7 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
       className="flex h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
       style={{ color: palette.text }}
     >
-      <div className="flex items-start justify-between">
-        <ThemeButton theme={theme} onClick={onThemeToggle} />
+      <div className="flex items-start justify-end">
         <img
           src={logoLarge}
           alt="Schutzgebiet"
@@ -461,6 +464,7 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
 function MobileCataloguePage({
   palette,
   theme,
+  onThemeToggle,
   onLogoClick,
   activeMedia,
   onOpenMedia,
@@ -470,14 +474,18 @@ function MobileCataloguePage({
       className="flex min-h-[calc(100vh-40px)] flex-col"
       style={{ color: palette.text }}
     >
-      <a href="#home" onClick={onLogoClick} className="w-fit">
-        <img
-          src={logoSmall}
-          alt="Schutzgebiet"
-          className="h-auto w-[75px]"
-          draggable="false"
-        />
-      </a>
+      <div className="flex items-start justify-between">
+        <a href="#home" onClick={onLogoClick} className="w-fit">
+          <img
+            src={logoSmall}
+            alt="Schutzgebiet"
+            className="h-auto w-[75px]"
+            draggable="false"
+          />
+        </a>
+
+        <ThemeButton theme={theme} onClick={onThemeToggle} />
+      </div>
 
       <div className="mt-8">
         <h1 className="text-[24px] leading-none">CATALOGUE</h1>
