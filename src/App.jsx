@@ -4,10 +4,12 @@ import logoSmall from "./assets/logo-75px.svg";
 import buttonBrightToDark from "./assets/button-bright-to-dark.svg";
 import buttonDarkToBright from "./assets/button-dark-to-bright.svg";
 
-const HOME_INFO = `is an independent music
-label and artist
-collective based in
-Vienna.`;
+const HOME_INFO = `
+is an 
+independent 
+music label and 
+artist collective 
+started 2026 in Vienna.`;
 
 const RELEASES = [
   { label: "SG001:", text: "DUUN - S/T (2026)", href: "https://schutzgebiet.bandcamp.com/album/s-t-2026" },
