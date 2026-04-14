@@ -261,7 +261,7 @@ function App() {
           ) : null}
         </div>
 
-        <div className="min-h-[calc(100vh-40px)] md:hidden">
+        <div className="min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] md:hidden">
           {mobilePage === "home" ? (
             <MobileHomePage
               palette={palette}
@@ -399,8 +399,11 @@ function DesktopMediaColumn({
 function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
   return (
     <div
-      className="flex min-h-[calc(100vh-40px)] flex-col justify-between"
-      style={{ color: palette.text }}
+      className="flex min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] flex-col justify-between"
+      style={{
+        color: palette.text,
+        paddingBottom: "env(safe-area-inset-bottom)",
+      }}
     >
       <div className="flex items-start justify-between">
         <img
@@ -470,8 +473,11 @@ function MobileCataloguePage({
 }) {
   return (
     <div
-      className="flex min-h-[calc(100vh-40px)] flex-col"
-      style={{ color: palette.text }}
+      className="flex min-h-[calc(100dvh-40px-env(safe-area-inset-bottom))] flex-col"
+      style={{
+        color: palette.text,
+        paddingBottom: "env(safe-area-inset-bottom)",
+      }}
     >
       <div className="flex items-start justify-between">
         <a href="#home" onClick={onLogoClick} className="w-fit">
@@ -520,7 +526,10 @@ function MobileMediaOverlay({
         opacity: isVisible ? 1 : 0,
       }}
     >
-      <div className="h-full w-full p-5">
+      <div
+        className="h-full w-full p-5"
+        style={{ paddingBottom: "calc(20px + env(safe-area-inset-bottom))" }}
+      >
         <MediaPanel
           palette={palette}
           theme={theme}
