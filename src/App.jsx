@@ -4,8 +4,7 @@ import logoSmall from "./assets/logo-75px.svg";
 import buttonBrightToDark from "./assets/button-bright-to-dark.svg";
 import buttonDarkToBright from "./assets/button-dark-to-bright.svg";
 
-const HOME_INFO = `
-is an 
+const HOME_INFO = `is an 
 independent 
 music label and 
 artist collective 
@@ -300,7 +299,7 @@ function App() {
 function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
   return (
     <div
-      className="flex h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col justify-between"
+      className="flex h-[calc(100vh-40px)] w-[25vw] min-w-[320px] flex-col"
       style={{ color: palette.text }}
     >
       <div className="flex items-start justify-end">
@@ -312,11 +311,11 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         />
       </div>
 
-      <div className="whitespace-pre-line text-right text-[16px] leading-[1.35]">
+      <div className="mt-10 whitespace-pre-line text-right text-[16px] leading-[1.32]">
         {HOME_INFO}
       </div>
 
-      <nav className="flex flex-col items-end gap-2 text-[24px] leading-none">
+      <nav className="mt-10 flex flex-col items-end gap-2 text-[24px] leading-none">
         <span
           className="line-through no-underline"
           style={{ color: palette.external, textDecorationLine: "line-through" }}
@@ -349,8 +348,8 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
         </a>
       </nav>
 
-      <div className="flex justify-end text-[16px] leading-none">
-        <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
+      <div className="mt-auto flex justify-end text-[16px] leading-none">
+        <a href="mailto:f@schutzgebiet.at">CONTACT</a>
       </div>
     </div>
   );
@@ -413,7 +412,7 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
         <ThemeButton theme={theme} onClick={onThemeToggle} />
       </div>
 
-      <div className="whitespace-pre-line text-[16px] leading-[1.35]">
+      <div className="whitespace-pre-line text-[16px] leading-[1.32]">
         {HOME_INFO}
       </div>
 
@@ -454,8 +453,8 @@ function MobileHomePage({ palette, theme, onThemeToggle, onCatalogueClick }) {
       </nav>
 
       <div className="flex items-end justify-between text-[16px] leading-none">
-        <a href="mailto:f@schutzgebiet.at">CONTACT→</a>
-        <a href="#legal">LEGAL→</a>
+        <a href="mailto:f@schutzgebiet.at">CONTACT</a>
+        <a href="#legal">LEGAL</a>
       </div>
     </div>
   );
@@ -542,14 +541,12 @@ function CatalogueContent({
 }) {
   const headingClass = "text-[24px] leading-none";
   const listClass = mobile
-    ? "mt-3 space-y-1 text-[14px] leading-[1.35]"
-    : "mt-3 space-y-1 text-[16px] leading-[1.35]";
+    ? "mt-1 space-y-1 text-[14px] leading-[1.35]"
+    : "mt-1 space-y-1 text-[16px] leading-[1.35]";
 
   if (desktop) {
     return (
-      <div className="flex h-full flex-col justify-between">
-        <div className="pt-1 text-[24px] leading-none">CATALOGUE</div>
-
+      <div className="flex h-full flex-col">
         <section>
           <h2 className={headingClass}>RELEASES</h2>
           <div className={listClass}>
@@ -565,7 +562,7 @@ function CatalogueContent({
           </div>
         </section>
 
-        <section>
+        <section className="mt-10">
           <h2 className={headingClass}>MIXES</h2>
           <div className={listClass}>
             {MIXES.map((item) => (
@@ -580,7 +577,7 @@ function CatalogueContent({
           </div>
         </section>
 
-        <section>
+        <section className="mt-10">
           <h2 className={headingClass}>PRESENTED WORKS</h2>
           <div className={listClass}>
             {PRESENTED_WORKS.map((item) => (
@@ -595,8 +592,8 @@ function CatalogueContent({
           </div>
         </section>
 
-        <div className="text-[16px] leading-none">
-          <a href="#legal">LEGAL→</a>
+        <div className="mt-auto text-[16px] leading-none">
+          <a href="#legal">LEGAL</a>
         </div>
       </div>
     );
@@ -780,7 +777,7 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
       </div>
 
       <div
-        className={`flex items-end justify-between px-5 py-2 ${actionTextClass}`}
+        className={`flex items-end justify-between px-3 py-[10px] ${actionTextClass}`}
         style={{ color: palette.selectionText }}
       >
         <a
