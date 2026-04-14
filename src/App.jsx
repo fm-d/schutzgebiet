@@ -226,7 +226,7 @@ function App() {
         color: palette.text,
       }}
     >
-      <div className="mx-auto min-h-screen px-5 py-5 md:px-5 md:py-5">
+      <div className="mx-auto min-h-[100dvh] px-5 py-5 md:px-5 md:py-5">
         <div className="relative hidden h-[calc(100vh-40px)] md:block">
           <div className="absolute top-0 left-0 z-10">
             <ThemeButton theme={theme} onClick={handleThemeToggle} />
