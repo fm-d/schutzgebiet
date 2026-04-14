@@ -586,6 +586,7 @@ function CatalogueContent({
           </div>
         </section>
 
+        {/*
         <section className="mt-10">
           <h2 className={headingClass}>PRESENTED WORKS</h2>
           <div className={listClass}>
@@ -600,6 +601,7 @@ function CatalogueContent({
             ))}
           </div>
         </section>
+        */}
 
         <div className="mt-auto text-[16px] leading-none">
           <a href="#legal">LEGAL</a>
@@ -642,6 +644,7 @@ function CatalogueContent({
         </div>
       </section>
 
+      {/*
       <section>
         <h2 className={headingClass}>PRESENTED WORKS</h2>
         <div className={listClass}>
@@ -656,6 +659,7 @@ function CatalogueContent({
           ))}
         </div>
       </section>
+      */}
     </div>
   );
 }
