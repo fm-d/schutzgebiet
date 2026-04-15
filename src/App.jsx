@@ -693,7 +693,9 @@ function CatalogueItem({ item, palette, activeMedia, onOpenMedia }) {
         }}
       >
         <div>{item.label}</div>
-        <div className="underline hover:no-underline">{item.text}</div>
+        <div className={isActive ? "hover:no-underline" : "underline hover:no-underline"}>
+          {item.text}
+        </div>
       </button>
     );
   }
@@ -736,7 +738,9 @@ function CatalogueStackedItem({ item, palette, activeMedia, onOpenMedia }) {
           paddingRight: isActive ? "3px" : "0px",
         }}
       >
-        <div className="underline hover:no-underline">{item.label}</div>
+        <div className={isActive ? "hover:no-underline" : "underline hover:no-underline"}>
+          {item.label}
+        </div>
         <div>{item.text}</div>
       </button>
     );
