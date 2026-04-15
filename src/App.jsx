@@ -98,9 +98,16 @@ const PRESENTED_WORKS = [
   },
 ];
 
+const KEYBOARD_MEDIA_ITEMS = [
+  ...RELEASES.filter((item) => item.embedUrl),
+  ...MIXES.filter((item) => item.embedUrl),
+  ...PRESENTED_WORKS.filter((item) => item.embedUrl),
+];
+
 function App() {
-  const [theme, setTheme] = useState("dark");
-  const [mobilePage, setMobilePage] = useState("home");
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem("theme") || "dark";
+  }); const [mobilePage, setMobilePage] = useState("home");
   const [activeMedia, setActiveMedia] = useState(null);
   const [visibleMedia, setVisibleMedia] = useState(null);
   const [isMediaVisible, setIsMediaVisible] = useState(false);
@@ -191,9 +198,44 @@ function App() {
     return () => clearTimeout(timeout);
   }, [activeMedia]);
 
+  useEffect(() => {
+    function handleKey(e) {
+      if (!visibleMedia) return;
+
+      if (e.key === "Escape") {
+        setActiveMedia(null);
+        return;
+      }
+
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+
+      e.preventDefault();
+
+      const currentIndex = KEYBOARD_MEDIA_ITEMS.findIndex(
+        (item) => item.id === visibleMedia.id
+      );
+
+      if (currentIndex === -1) return;
+
+      const nextIndex =
+        e.key === "ArrowDown"
+          ? (currentIndex + 1) % KEYBOARD_MEDIA_ITEMS.length
+          : (currentIndex - 1 + KEYBOARD_MEDIA_ITEMS.length) % KEYBOARD_MEDIA_ITEMS.length;
+
+      setActiveMedia(KEYBOARD_MEDIA_ITEMS[nextIndex]);
+    }
+
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [visibleMedia]);
+
   const handleThemeToggle = () => {
     setTheme((prev) => (prev === "bright" ? "dark" : "bright"));
   };
+
+  useEffect(() => {
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   const handleCatalogueClick = (event) => {
     const isMobile = window.innerWidth < 1280;
@@ -424,7 +466,7 @@ function MobilePage({
         <a
           href={isCatalogue ? "#home" : undefined}
           onClick={isCatalogue ? onLogoClick : undefined}
-          className="w-fit"
+          className="w-fit active:opacity-70"
         >
           <img
             src={logoLarge}
@@ -464,7 +506,12 @@ function MobilePage({
           </div>
 
           <nav className="mt-auto flex flex-col items-start gap-3 text-[24px] leading-none">
-            <a href="#catalogue" onClick={onCatalogueClick} style={{ color: palette.external }}>
+            <a
+              href="#catalogue"
+              onClick={onCatalogueClick}
+              className="active:opacity-70"
+              style={{ color: palette.external }}
+            >
               CATALOGUE→
             </a>
             <span
@@ -477,6 +524,7 @@ function MobilePage({
               href="https://schutzgebiet.bandcamp.com/"
               target="_blank"
               rel="noreferrer"
+              className="active:opacity-70"
               style={{ color: palette.external }}
             >
               BANDCAMP→
@@ -485,6 +533,7 @@ function MobilePage({
               href="https://www.ninaprotocol.com/profiles/schutzgebiet/"
               target="_blank"
               rel="noreferrer"
+              className="active:opacity-70"
               style={{ color: palette.external }}
             >
               NINA PROTOCOL→
@@ -493,6 +542,7 @@ function MobilePage({
               href="https://www.soundcloud.com/schutzgebiet/"
               target="_blank"
               rel="noreferrer"
+              className="active:opacity-70"
               style={{ color: palette.external }}
             >
               SOUNDCLOUD→
@@ -500,8 +550,8 @@ function MobilePage({
           </nav>
 
           <div className="mt-auto flex items-end justify-between text-[16px] leading-none">
-            <a href="mailto:f@schutzgebiet.at">CONTACT</a>
-            <a href="#legal">LEGAL</a>
+            <a href="mailto:f@schutzgebiet.at" className="active:opacity-70">CONTACT</a>
+            <a href="#legal" className="active:opacity-70">LEGAL</a>
           </div>
         </>
       )}
@@ -673,7 +723,9 @@ function CatalogueItem({ item, palette, activeMedia, onOpenMedia }) {
       <button
         type="button"
         onClick={() => onOpenMedia(item)}
-        className="block w-full text-left leading-[1.25] transition-colors duration-300 ease-out"
+        onMouseEnter={() => preloadEmbed(item)}
+        onFocus={() => preloadEmbed(item)}
+        className="block w-full cursor-pointer text-left leading-[1.25] transition-colors duration-300 ease-out active:opacity-70"
         style={{
           backgroundColor: isActive
             ? palette.selectionBackground
@@ -726,7 +778,9 @@ function CatalogueStackedItem({ item, palette, activeMedia, onOpenMedia }) {
       <button
         type="button"
         onClick={() => onOpenMedia(item)}
-        className="block w-full text-left leading-[1.25] transition-colors duration-300 ease-out"
+        onMouseEnter={() => preloadEmbed(item)}
+        onFocus={() => preloadEmbed(item)}
+        className="block w-full cursor-pointer text-left leading-[1.25] transition-colors duration-300 ease-out active:opacity-70"
         style={{
           backgroundColor: isActive ? palette.selectionBackground : "transparent",
           color: isActive ? palette.selectionText : "inherit",
@@ -764,22 +818,21 @@ function CatalogueStackedItem({ item, palette, activeMedia, onOpenMedia }) {
 }
 
 function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
+  const preloadedEmbeds = new Set();
+
   const embedUrl = getEmbedUrl(activeMedia, theme);
   const [isEmbedVisible, setIsEmbedVisible] = useState(false);
 
   useEffect(() => {
     setIsEmbedVisible(false);
 
-    const frame = requestAnimationFrame(() => {
-      const frame2 = requestAnimationFrame(() => {
-        setIsEmbedVisible(true);
-      });
+    const timeout = setTimeout(() => {
+      setIsEmbedVisible(true);
+    }, 60);
 
-      return () => cancelAnimationFrame(frame2);
-    });
-
-    return () => cancelAnimationFrame(frame);
+    return () => clearTimeout(timeout);
   }, [activeMedia?.id, embedUrl]);
+
   const openLabel =
     activeMedia.platform === "bandcamp" ? "OPEN IN BANDCAMP" : "OPEN IN SOUNDCLOUD";
 
@@ -801,7 +854,7 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
           key={activeMedia.id}
           title={activeMedia.text}
           src={embedUrl}
-          className="h-full w-full transition-opacity duration-300 ease-out"
+          className="h-full w-full transition-opacity duration-300 ease-[cubic-bezier(.16,1,.3,1)]"
           style={{
             border: 0,
             display: "block",
@@ -829,7 +882,7 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
           href={activeMedia.href}
           target="_blank"
           rel="noreferrer"
-          className="cursor-pointer hover:no-underline"
+          className="cursor-pointer hover:no-underline active:opacity-70"
           style={{ cursor: "pointer" }}
         >
           {openLabel}
@@ -837,7 +890,7 @@ function MediaPanel({ palette, theme, activeMedia, onClose, mobile = false }) {
         <button
           type="button"
           onClick={onClose}
-          className="bg-transparent p-0 underline hover:no-underline cursor-pointer"
+          className="bg-transparent p-0 underline hover:no-underline cursor-pointer active:opacity-70"
           style={{ cursor: "pointer" }}
         >
           CLOSE
@@ -855,7 +908,7 @@ function ThemeButton({ theme, onClick }) {
       type="button"
       onClick={onClick}
       aria-label="Toggle bright and dark mode"
-      className="cursor-pointer border-0 bg-transparent p-0"
+      className="cursor-pointer border-0 bg-transparent p-0 active:opacity-70"
     >
       <img
         src={icon}
@@ -865,6 +918,26 @@ function ThemeButton({ theme, onClick }) {
       />
     </button>
   );
+}
+
+const preloadedEmbeds = new Set();
+
+function preloadEmbed(item) {
+  const url = getEmbedUrl(item);
+  if (!url || preloadedEmbeds.has(url)) return;
+
+  const iframe = document.createElement("iframe");
+  iframe.src = url;
+  iframe.style.position = "absolute";
+  iframe.style.width = "1px";
+  iframe.style.height = "1px";
+  iframe.style.opacity = "0";
+  iframe.style.pointerEvents = "none";
+  iframe.style.left = "-9999px";
+  iframe.setAttribute("aria-hidden", "true");
+
+  document.body.appendChild(iframe);
+  preloadedEmbeds.add(url);
 }
 
 function getEmbedUrl(item, theme) {
