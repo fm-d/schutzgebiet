@@ -45,6 +45,18 @@ const RELEASES = [
     text: "Tria - LP (2026)",
     href: "#",
   },
+  {
+    id: "sg00x-sc",
+    label: "SG00X:",
+    text: "SPLIT CITY - OUSIAS (2026)",
+    href: "#",
+  }
+  {
+    id: "sg00x-split",
+    label: "SG00X:",
+    text: "v7c / duun-2 – split ep (2026)",
+    href: "#",
+  }
 ];
 
 const MIXES = [
