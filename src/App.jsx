@@ -50,7 +50,7 @@ const RELEASES = [
     label: "SG00X:",
     text: "SPLIT CITY - OUSIAS (2026)",
     href: "#",
-  }
+  },
   {
     id: "sg00x-split",
     label: "SG00X:",
