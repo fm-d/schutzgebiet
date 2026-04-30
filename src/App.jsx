@@ -384,7 +384,10 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
           >
             SPOTIFY→
           </span>
-          <span className="hidden group-hover:inline no-underline">
+          <span
+            className="hidden group-hover:inline no-underline"
+            style={{ letterSpacing: "-0.2em" }}
+          >
             🖕🖕🖕🖕🖕
           </span>
         </span>
