@@ -375,10 +375,18 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
 
       <nav className="mt-10 flex flex-col items-end gap-2 text-[24px] leading-none">
         <span
-          className="line-through no-underline"
-          style={{ color: palette.external, textDecorationLine: "line-through" }}
+          className="group relative inline-block no-underline"
+          style={{ color: palette.external }}
         >
-          SPOTIFY→
+          <span
+            className="group-hover:hidden"
+            style={{ textDecorationLine: "line-through" }}
+          >
+            SPOTIFY→
+          </span>
+          <span className="hidden group-hover:inline no-underline">
+            🖕🖕🖕🖕🖕
+          </span>
         </span>
         <a
           href="https://schutzgebiet.bandcamp.com/"
