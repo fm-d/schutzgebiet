@@ -386,7 +386,7 @@ function DesktopHomeColumn({ palette, theme, onThemeToggle }) {
           </span>
           <span
             className="hidden group-hover:inline no-underline"
-            style={{ letterSpacing: "-0.2em" }}
+            style={{ letterSpacing: "-0.12em" }}
           >
             🖕🖕🖕🖕🖕
           </span>
